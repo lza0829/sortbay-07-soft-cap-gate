@@ -134,4 +134,41 @@ th, td { border: 1px solid #c2c8d0; padding: 0.45rem 0.5rem; text-align: left; }
 th { background: #e4e8ee; }
 .msg { margin: 0.5rem 0; color: var(--ok); }
 .err { margin: 0.5rem 0; color: var(--danger); }
+.err.small { font-size: 0.78rem; margin: 0.2rem 0 0; }
 .muted { color: #66707c; font-size: 0.86rem; }
+.muted-row { opacity: 0.72; }
+.small { font-size: 0.82rem; }
+
+.badge {
+  display: inline-block;
+  padding: 0.16rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.badge.ok { background: #dcefe4; color: var(--ok); border-color: #9cc7ae; }
+.badge.warn { background: #f7e8c2; color: #7a5a12; border-color: var(--warn); }
+.badge.high { background: #f6dcc4; color: var(--rust-deep); border-color: #dfa878; }
+.badge.danger { background: #f3d6d0; color: var(--danger); border-color: #d99a8e; }
+
+.row-over { background: #fbeae6 !important; }
+.row-line { background: #fbf3dd !important; }
+
+.alert-bar {
+  background: #f3d6d0;
+  border: 1px solid #d99a8e;
+  border-left: 6px solid var(--danger);
+  color: #5d2118;
+  padding: 0.6rem 0.8rem;
+  margin: 0.6rem 0;
+  font-size: 0.92rem;
+}
+.receipt {
+  background: #e7eefc;
+  border-left: 4px solid #3b6fb6;
+  padding: 0.5rem 0.7rem;
+  margin: 0.4rem 0;
+  font-size: 0.9rem;
+}
+h3 { margin: 1.1rem 0 0.5rem; font-size: 1rem; }

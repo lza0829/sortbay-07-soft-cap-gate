@@ -2,6 +2,7 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 from app.db import db, rows_to_list, row_to_dict
+from app.services.capacity import overview_reconcile, replay_all
 from app.services.common import audit, now_str
 
 router = APIRouter(tags=["班次"])
@@ -44,6 +45,8 @@ def reconcile(shift_id: int | None = None):
             "SELECT COUNT(*) c FROM scans WHERE shift_id=? AND status IN ('待路由','错分回流')",
             (sid,),
         ).fetchone()["c"]
+        cap_rec = overview_reconcile(conn)
+        ledger = replay_all(conn)
         return {
             "班次": row_to_dict(shift),
             "扫描总数": scan_n,
@@ -52,6 +55,11 @@ def reconcile(shift_id: int | None = None):
             "已封袋数": sealed_bag,
             "回流批次数": divert_n,
             "未清件数": pending,
+            # 班次边界与总览容量对账同刷：超容口门与在口/账本一致性一并给出。
+            "超容口门": cap_rec["超容口门"],
+            "超容口门数": cap_rec["超容口门数"],
+            "容量对账一致": cap_rec["一致"] and ledger["全部一致"],
+            "容量对账": cap_rec,
         }
 
 

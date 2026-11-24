@@ -6,6 +6,7 @@ export default function Diverts() {
   const [scans, setScans] = useState([])
   const [scanId, setScanId] = useState('')
   const [err, setErr] = useState('')
+  const [msg, setMsg] = useState('')
   const load = async () => {
     setBatches(await api('/回流批次'))
     const s = await api('/扫描')
@@ -13,14 +14,19 @@ export default function Diverts() {
   }
   useEffect(() => { load().catch((e) => setErr(e.message)) }, [])
   const create = async () => {
+    setErr(''); setMsg('')
     try {
-      await api('/回流批次', { method: 'POST', body: JSON.stringify({ 扫描编号: Number(scanId) }) })
+      const r = await api('/回流批次', { method: 'POST', body: JSON.stringify({ 扫描编号: Number(scanId) }) })
+      setMsg(`已建回流批次，扫描转错分回流并离开在口口径；该口门当前在口 ${r.在口件数} 件，可在扫描册重新裁决`)
+      setScanId('')
       load()
     } catch (e) { setErr(e.message) }
   }
   return (
     <div className="panel">
-      <h2>错分回流</h2>
+      <h2>错分回流 · 回流入口</h2>
+      <p className="muted">已路由/已入袋件建回流后转为错分回流，在口件数同步减一；之后可在扫描册再次路由裁决。</p>
+      {msg && <div className="msg">{msg}</div>}
       {err && <div className="err">{err}</div>}
       <div className="row">
         <label>扫描
